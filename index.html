@@ -1119,7 +1119,7 @@
                       We streamlined our inventory and delivery processes thanks
                       to their hands-on approach and logistics expertise. The
                       operational improvements have saved us time and cost.
-                    </p>
+                    </p>gti
                   </div>
                 </div>
               </div>
@@ -1147,7 +1147,113 @@
         </div>
     </section> -->
     <!-- Call To Action 2 End -->
+
+    <!-- Career Section -->
+     <section class="career-section">
+        <div class="floating-shapes">
+            <div class="shape shape1"></div>
+            <div class="shape shape2"></div>
+            <div class="shape shape3"></div>
+        </div>
+        
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h1 class="section-title">Join Our Team</h1>
+                <p class="section-subtitle">
+                    Ready to make an impact? We're looking for talented individuals who share our passion for excellence and innovation. Submit your application and let's build the future together.
+                </p>
+            </div>
+
+            <div class="career-form-container" data-aos="fade-up" data-aos-delay="200">
+                <div class="success-message" id="successMessage">
+                    <i class="fas fa-check-circle" style="font-size: 24px;"></i>
+                    <div>
+                        <strong>Application Submitted Successfully!</strong><br>
+                        Thank you for your interest. We'll review your application and get back to you soon.
+                    </div>
+                </div>
+
+                <div class="error-message" id="errorMessage">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 24px;"></i>
+                    <div>
+                        <strong>Submission Failed</strong><br>
+                        <span id="errorText">Please try again or contact us directly.</span>
+                    </div>
+                </div>
+
+                <form id="careerForm"
+                 action="https://formspree.io/f/myzjkekn"
+  method="POST"
+                >
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName" class="form-label">First Name *</label>
+                            <input type="text" id="firstName" name="firstName" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName" class="form-label">Last Name *</label>
+                            <input type="text" id="lastName" name="lastName" class="form-input" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address *</label>
+                        <input type="email" id="email" name="email" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone" class="form-label">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="position" class="form-label">Position of Interest</label>
+                        <input type="text" id="position" name="position" class="form-input" placeholder="e.g., HR Consultant, Business Analyst">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="experience" class="form-label">Years of Experience</label>
+                        <input type="number" id="experience" name="experience" class="form-input" min="0" max="50">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message" class="form-label">Cover Letter / Additional Information</label>
+                        <textarea id="message" name="message" class="form-textarea" placeholder="Tell us about yourself and why you'd be a great fit for our team..."></textarea>
+                    </div>
+<!-- 
+                    <div class="file-upload-container">
+                        <label class="form-label">Upload Documents (Resume, Portfolio, etc.) *</label>
+                        <div class="file-upload-area" id="fileUploadArea">
+                            <input type="file" id="fileInput" name="documents" class="file-input" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" required>
+                            <div class="file-upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <div class="file-upload-text">
+                                Drag & drop your files here or click to browse
+                            </div>
+                            <div class="file-upload-subtext">
+                                Supported formats: PDF, DOC, DOCX, JPG, PNG (Max 5MB each)
+                            </div>
+                        </div>
+                      </div>
+
+                      <div class="uploaded-files" id="uploadedFiles"></div> -->
+                    
+
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        <span class="btn-text">Submit Application</span>
+                        <div class="btn-spinner">
+                            <div class="spinner"></div>
+                        </div>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
     <!-- Footer Start -->
+
+
+
     <footer>
       <!-- Widgets Start -->
       <div class="footer-widgets" id="contactUs">
@@ -1432,6 +1538,287 @@ s0.parentNode.insertBefore(s1,s0);
                 this.style.transform = 'translateY(0) scale(1)';
             });
         });
+
+
+
+
+        let uploadedFiles = [];
+        const maxFileSize = 5 * 1024 * 1024; // 5MB in bytes
+
+        // File upload functionality
+        const fileInput = document.getElementById('fileInput');
+        const fileUploadArea = document.getElementById('fileUploadArea');
+        const uploadedFilesContainer = document.getElementById('uploadedFiles');
+
+        // Drag and drop events
+        fileUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.add('drag-over');
+        });
+
+        fileUploadArea.addEventListener('dragleave', () => {
+            fileUploadArea.classList.remove('drag-over');
+        });
+
+        fileUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.remove('drag-over');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        function handleFiles(files) {
+            Array.from(files).forEach(file => {
+                if (validateFile(file)) {
+                    // Check if file already exists
+                    const existingFile = uploadedFiles.find(f => f.name === file.name && f.size === file.size);
+                    if (!existingFile) {
+                        uploadedFiles.push(file);
+                        displayFile(file);
+                    }
+                }
+            });
+        }
+
+        function validateFile(file) {
+            // Check file size
+            if (file.size > maxFileSize) {
+                showError(`File "${file.name}" is too large. Maximum size is 5MB.`);
+                return false;
+            }
+
+            // Check file type
+            const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'image/jpeg', 'image/png', 'image/jpg'];
+            if (!allowedTypes.includes(file.type)) {
+                showError(`File "${file.name}" is not a supported format.`);
+                return false;
+            }
+
+            return true;
+        }
+
+        function displayFile(file) {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.dataset.fileName = file.name;
+            fileItem.dataset.fileSize = file.size;
+            
+            const fileIcon = getFileIcon(file.type);
+            const fileSize = formatFileSize(file.size);
+            
+            fileItem.innerHTML = `
+                <div class="file-info">
+                    <i class="${fileIcon} file-icon"></i>
+                    <div class="file-details">
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-size">${fileSize}</div>
+                    </div>
+                </div>
+                <button type="button" class="file-remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            // Add event listener to the remove button
+            const removeBtn = fileItem.querySelector('.file-remove');
+            removeBtn.addEventListener('click', (e) => {
+                 e.preventDefault();
+               e.stopPropagation();
+               console.log('ih ave been clicked')
+                removeFile(file.name, file.size);
+            });
+            
+            uploadedFilesContainer.appendChild(fileItem);
+        }
+
+        function getFileIcon(fileType) {
+            if (fileType.includes('pdf')) return 'fas fa-file-pdf';
+            if (fileType.includes('word') || fileType.includes('document')) return 'fas fa-file-word';
+            if (fileType.includes('image')) return 'fas fa-file-image';
+            return 'fas fa-file';
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function removeFile(fileName, fileSize) {
+            // Remove from uploadedFiles array
+            uploadedFiles = uploadedFiles.filter(file => !(file.name === fileName && file.size === fileSize));
+            
+            // Remove from DOM
+            const fileItems = uploadedFilesContainer.querySelectorAll('.file-item');
+            fileItems.forEach(item => {
+                if (item.dataset.fileName === fileName && item.dataset.fileSize == fileSize) {
+                    item.remove();
+                }
+            });
+            
+            // Reset file input if no files remain
+            if (uploadedFiles.length === 0) {
+                fileInput.value = '';
+            }
+        }
+
+        // Form submission
+        document.getElementById('careerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+                const form = e.target;
+            const submitBtn = document.getElementById('submitBtn');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Reset messages
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            
+            // Validate files
+            if (uploadedFiles.length === 0) {
+                showError('Please upload at least one document.');
+                return;
+            }
+            
+            // Show loading state
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+            
+        //     try {
+        //         // Prepare form data
+        //         const formData = new FormData();
+        //         formData.append('firstName', document.getElementById('firstName').value);
+        //         formData.append('lastName', document.getElementById('lastName').value);
+        //         formData.append('email', document.getElementById('email').value);
+        //         formData.append('phone', document.getElementById('phone').value);
+        //         formData.append('position', document.getElementById('position').value);
+        //         formData.append('experience', document.getElementById('experience').value);
+        //         formData.append('message', document.getElementById('message').value);
+                
+        //         // Add files
+        //         uploadedFiles.forEach((file, index) => {
+        //             formData.append(`document_${index}`, file);
+        //         });
+                
+        //         // Simulate submission
+        //         await simulateSubmission();
+                
+        //         // Show success message
+        //         successMessage.style.display = 'flex';
+                
+        //         // Reset form
+        //         document.getElementById('careerForm').reset();
+        //         uploadedFiles = [];
+        //         uploadedFilesContainer.innerHTML = '';
+                
+        //         // Scroll to success message
+        //         successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+        //     } catch (error) {
+        //         console.error('Submission error:', error);
+        //         showError('There was an error submitting your application. Please try again.');
+        //     } finally {
+        //         // Reset button state
+        //         submitBtn.classList.remove('loading');
+        //         submitBtn.disabled = false;
+        //     }
+        // });
+        
+       
+        try {
+        const formData = new FormData(form);
+
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            successMessage.style.display = 'flex';
+            form.reset();
+            successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+            const data = await response.json();
+            const errorMsg = data?.errors?.[0]?.message || 'There was an error submitting your application.';
+            showError(errorMsg);
+        }
+    } catch (err) {
+        console.error('Submission error:', err);
+        showError('Network error. Please try again later.');
+    } finally {
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+    }
+});
+        async function simulateSubmission() {
+            // Simulate network delay
+            return new Promise(resolve => setTimeout(resolve, 2000));
+        }
+        
+        function showError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            errorText.textContent = message;
+            errorMessage.style.display = 'flex';
+            errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Real-time form validation
+        document.querySelectorAll('.form-input, .form-textarea').forEach(input => {
+            input.addEventListener('blur', validateField);
+            input.addEventListener('input', clearFieldError);
+        });
+
+        function validateField(e) {
+            const field = e.target;
+            const value = field.value.trim();
+            
+            // Remove existing error styling
+            field.style.borderColor = '';
+            
+            if (field.hasAttribute('required') && !value) {
+                field.style.borderColor = '#e53e3e';
+                return false;
+            }
+            
+            if (field.type === 'email' && value && !isValidEmail(value)) {
+                field.style.borderColor = '#e53e3e';
+                return false;
+            }
+            
+            if (field.type === 'tel' && value && !isValidPhone(value)) {
+                field.style.borderColor = '#e53e3e';
+                return false;
+            }
+            
+            field.style.borderColor = '#48bb78';
+            return true;
+        }
+
+        function clearFieldError(e) {
+            const field = e.target;
+            if (field.style.borderColor === 'rgb(229, 62, 62)') {
+                field.style.borderColor = '';
+            }
+        }
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function isValidPhone(phone) {
+            const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+            return phoneRegex.test(phone.replace(/[\s\-\(\)]/g, ''));
+        }
     </script>
 
   </body>
